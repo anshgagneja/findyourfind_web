@@ -21,7 +21,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "u167800546_findyour_findy";
+$database = "findyourfind";
 
 try {
   $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
