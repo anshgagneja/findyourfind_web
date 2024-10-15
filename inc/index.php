@@ -48,6 +48,11 @@ include 'database.php';
         include 'inc/nav-bar.php';
         include 'inc/checkout-body.php';
         include 'inc/footer-1.php';
+    } else if($page_name == 'Wishlist'){
+        include 'inc/header-1.php';
+        include 'inc/nav-bar.php';
+        include 'inc/wishlist-body.php';
+        include 'inc/footer-1.php';
     } else {
         include 'inc/header.php';
         include 'inc/login-body.php';

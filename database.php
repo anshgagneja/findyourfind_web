@@ -41,6 +41,17 @@ if (!function_exists('getuserCart')) {
   }
 }
 
+if (!function_exists('getuserWish')) {
+  function getuserWish($conn){
+     $uid = $_SESSION['session_id'];         
+     $user_cart = "select * from products where
+     id in (select product_id from tbl_user_has_wishlist where user_id = '$uid')";
+     $cart_list = $conn->prepare("$user_cart");
+     $cart_list->execute();
+     return $cart_list->fetchAll(PDO :: FETCH_OBJ);
+  }
+}
+
 if (!function_exists('getCustomerAddress')) {
   function getCustomerAddress($conn,$user_id){
     $query = $conn->prepare("select * from tbl_address where customer_id = '$user_id' ");

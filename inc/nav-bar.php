@@ -19,6 +19,9 @@
         <?php
           if($_SESSION['session_role'] != "Admin"){ ?>
             <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.php?page=Wishlist">Wishlist</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="index.php?page=Cart">Cart</a>
             </li>
           <?php }
