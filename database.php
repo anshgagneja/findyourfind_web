@@ -31,6 +31,13 @@ if (!function_exists('deleteCart')) {
   }
 }
 
+if (!function_exists('deleteWish')) {
+  function deleteWish($conn,$p_id){
+    $sqlremove = $conn->prepare("delete from tbl_user_has_wishlist where wishlist_id = '$p_id' ");
+    $sqlremove->execute();
+  }
+}
+
 if (!function_exists('getuserCart')) {
   function getuserCart($conn){
      $uid = $_SESSION['session_id'];         
@@ -44,8 +51,9 @@ if (!function_exists('getuserCart')) {
 if (!function_exists('getuserWish')) {
   function getuserWish($conn){
      $uid = $_SESSION['session_id'];         
-     $user_cart = "select * from products where
-     id in (select product_id from tbl_user_has_wishlist where user_id = '$uid')";
+     $user_cart = "select * from tbl_user_has_wishlist w inner join products p on p.id = w.product_id
+     where w.user_id = '$uid'";
+     
      $cart_list = $conn->prepare("$user_cart");
      $cart_list->execute();
      return $cart_list->fetchAll(PDO :: FETCH_OBJ);

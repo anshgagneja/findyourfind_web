@@ -2,7 +2,7 @@
 
       if(isset($_GET['delete_id'])){
         $id = $_GET['delete_id'];
-        deleteCart($conn,$id);
+        deleteWish($conn,$id);
       }
       $wish_list = getuserWish($conn);
 ?>
@@ -50,7 +50,7 @@
       <td>
           
             <div  class="col-md-12 " style="text-align:center;">
-               <a href="?page=Cart&delete_id=<?php echo $obj->cart_id; ?>" class="btn btn-danger">Delete</a>
+               <a href="?page=Wishlist&delete_id=<?php echo $obj->wishlist_id; ?>" class="btn btn-danger">Delete</a>
             </div>
           
       </td>
