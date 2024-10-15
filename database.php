@@ -1,23 +1,4 @@
 <?php
-// $servername = "localhost";
-// $username = "u167800546_findyour_findy";
-// $password = "u167800546_findyour_findY";
-// $database = "u167800546_findyour_findy";
-
-
-
-// try {
-//   $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
-//   // set the PDO error mode to exception
-//   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//   //echo "Connected successfully";
-// } catch(PDOException $e) {
-//   echo "Connection failed:" . $e->getMessage();
-// }
-
-// uncomment above if again running findyourfind.shop by buying webotapp and comment below chatgpt part
-
-// chatgpt localhost
 $servername = "localhost";
 $username = "root";
 $password = "";
