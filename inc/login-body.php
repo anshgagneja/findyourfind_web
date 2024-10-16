@@ -85,7 +85,7 @@ if (isset($_POST['submit'])) {
                       </div>
                       <div class="col-md-12" style="text-align: left; font-size: 14px; font-weight: 200; padding: 10px 20px 10px 20px">
                         <label>Your Password</label>
-                        <input type="text" name="password" placeholder="Password"
+                        <input type="password" name="password" placeholder="Password"
                         class="form-control">
                       </div>
 

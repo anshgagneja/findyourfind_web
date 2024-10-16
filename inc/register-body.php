@@ -53,27 +53,27 @@ if (isset($_POST['submit'])) {
                     <div class="row">
                       <div class="col-md-12" style="text-align: left; font-size: 14px; font-weight: 200; padding: 20px 20px 10px 20px">
                         <label>Your Name</label>
-                        <input type="text" name="yourname" placeholder="Name"
+                        <input type="text" required name="yourname" placeholder="Name"
                         class="form-control">
                       </div>
                       <div class="col-md-12" style="text-align: left; font-size: 14px; font-weight: 200; padding: 10px 20px 10px 20px">
                         <label>Your Email (Email will be the username)</label>
-                        <input type="text" name="youremail" placeholder="Email id"
+                        <input type="email" required name="youremail" placeholder="you@yourdomain.com"
                         class="form-control">
                       </div>
                       <div class="col-md-12" style="text-align: left; font-size: 14px; font-weight: 200; padding: 10px 20px 10px 20px">
                         <label>Your Mobile</label>
-                        <input type="number" name="yourmobile" placeholder="10 digit mobile number"
+                        <input type="tel" required pattern ="[0-9]{10}" name="yourmobile" placeholder="10 digit mobile number"
                         class="form-control">
                       </div>
                       <div class="col-md-12" style="text-align: left; font-size: 14px; font-weight: 200; padding: 10px 20px 10px 20px">
                         <label>Your Password</label>
-                        <input type="text" name="password" placeholder="Password"
+                        <input type="password" required name="password" placeholder="Password"
                         class="form-control">
                       </div>
                       <div class="col-md-12" style="text-align: left; font-size: 14px; font-weight: 200; padding: 10px 20px 10px 20px">
                         <label>Confirm Password</label>
-                        <input type="text" name="confirmpassword" placeholder="Confirm Password"
+                        <input type="password" name="confirmpassword" required placeholder="Confirm Password"
                         class="form-control">
                       </div>
                       <div class="col-md-12" style="text-align: center; font-size: 14px; font-weight: 200; padding: 10px 20px 10px 20px">
