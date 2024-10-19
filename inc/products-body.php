@@ -200,7 +200,7 @@ $result = $sql->fetchAll(PDO :: FETCH_OBJ);
     <div class="container">
        <?php  
             if(count($result) <= 0){
-              echo "<b>No results found for $text<b>";
+              echo "<b>No results found for '$text'<b>";
             }
             foreach ($result as $data){ 
 

@@ -16,6 +16,10 @@
     </div>
   </div>
 
+<?php
+  if(count($wish_list) == 0){
+    echo "<b>No items added to Wishlist<b>";
+  } else { ?>
 <div class="container">
   <div class="row">
     <div class="col-md-12">
@@ -61,4 +65,5 @@
 </table>
     </div>
   </div>
+<?php } ?>
 </div>
