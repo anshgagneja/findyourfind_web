@@ -170,13 +170,19 @@ $photo_1 = "";
       
 }
 
-
 //Select Statement.
-$stmt = "SELECT * FROM products ";
-$sql = $conn->prepare("$stmt");
+if(isset($_GET['text'])){
+  $text = addslashes($_GET['text']);
+  $stmt = "SELECT * FROM products WHERE LOWER(pro_name) like LOWER('%$text%') 
+  UNION 
+  SELECT * FROM products WHERE LOWER(pro_desc) LIKE LOWER('%$text%')";
+} 
+else{
+  $stmt = "SELECT * FROM products";
+}
+$sql = $conn->prepare($stmt);
 $sql->execute();
 $result = $sql->fetchAll(PDO :: FETCH_OBJ);
-
 
 ?>
 
@@ -193,6 +199,9 @@ $result = $sql->fetchAll(PDO :: FETCH_OBJ);
 
     <div class="container">
        <?php  
+            if(count($result) <= 0){
+              echo "<b>No results found for '$text'<b>";
+            }
             foreach ($result as $data){ 
 
                 $p_id = $data->id;

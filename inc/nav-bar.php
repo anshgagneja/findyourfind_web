@@ -1,3 +1,10 @@
+<?php
+if(isset($_POST['searchBtn'])){
+  $text = $_POST['searchTxt'];
+  header("Location: index.php?page=Products&text=$text");
+}
+?>
+
 <nav class="navbar navbar-expand-lg " style="background-color: #08AEEA;
     background-image: linear-gradient(0deg, #08AEEA 0%, #2AF598 100%);">
   <div class="container-fluid">
@@ -32,9 +39,9 @@
         </li>
         
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
+      <form class="d-flex" method="POST" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" name="searchTxt">
+        <button class="btn btn-outline-success" name="searchBtn" type="submit">Search</button>
       </form>
     </div>
   </div>
