@@ -73,7 +73,7 @@ if (isset($_POST['Cart'])) {
 if (isset($_POST['Submit'])) {
 
   $pid = $_POST['pid'];
-$photo_1 = "";
+  $photo_1 = "";
 
   $allow = array("jpg", "JPG", "jpeg", "JPEG", "gif", "GIF", "png", "PNG", "pdf", "PDF");
   //1st File
@@ -91,8 +91,6 @@ $photo_1 = "";
       $target_path = $target_path . $photo1;
       if(move_uploaded_file($_FILES['photo1']['tmp_name'], $target_path)){
           $photo_1 = $photo1;
-
-
       }
       
     }
@@ -101,41 +99,8 @@ $photo_1 = "";
   
   $photo2 = "";
   $photo3 = "";
-  // if($_FILES['photo2']['name'] == "") {
-  //   //echo "No Image"
-  // } else {
-
-  //   $photo2=basename($_FILES['photo2']['name']);
-  //   $extension = pathinfo($photo2, PATHINFO_EXTENSION);
-  //   if(in_array($extension,$allow)){
-  //     $target_path = "uploads/";
-  //     $photo2 = md5(rand() * time()).'.'.$extension;
-  //     $target_path = $target_path . $photo2;
-  //     move_uploaded_file($_FILES['photo2']['tmp_name'], $target_path);
-  //     $photo_2 = ($photo2!='')?" pro_img_2='$photo2' ". ',':'';
-  //   }
   
-  // }
-
-
-  // if($_FILES['photo3']['name'] == "") {
-  //   //echo "No Image"
-  // } else {
-
-  //   $photo3=basename($_FILES['photo3']['name']);
-  //   $extension = pathinfo($photo3, PATHINFO_EXTENSION);
-  //   if(in_array($extension,$allow)){
-  //     $target_path = "uploads/";
-  //     $photo3 = md5(rand() * time()).'.'.$extension;
-  //     $target_path = $target_path . $photo3;
-  //     move_uploaded_file($_FILES['photo3']['tmp_name'], $target_path);
-  //     $photo_3 = ($photo3!='')?" pro_img_3='$photo3' ". ',':'';
-  //   }
-  
-  // }
-
- 
-       if($photo_1 == ""){
+  if($photo_1 == ""){
         $sql = "UPDATE products SET
         pro_name = '$pro_name',
         pro_sp = '$pro_sp',
@@ -147,7 +112,7 @@ $photo_1 = "";
 
         
 
-       }else{
+  }else{
         
         $sql = "UPDATE products SET
         pro_img_1 = '$photo_1',
@@ -164,21 +129,27 @@ $photo_1 = "";
         
         $conn->exec($sql);
      
-       }
-        
+       }          
+}
 
-      
+if(isset($_POST['Delete'])){
+  $pid = $_POST['pid'];
+  $query = "UPDATE products SET available = 0 WHERE id = $pid";
+
+  $sql = $conn->prepare($query);
+  $sql->execute();
+  header("Location: index.php?page=Products");
 }
 
 //Select Statement.
 if(isset($_GET['text'])){
   $text = addslashes($_GET['text']);
-  $stmt = "SELECT * FROM products WHERE LOWER(pro_name) like LOWER('%$text%') 
+  $stmt = "SELECT * FROM products WHERE LOWER(pro_name) like LOWER('%$text%') AND available = 1 
   UNION 
-  SELECT * FROM products WHERE LOWER(pro_desc) LIKE LOWER('%$text%')";
+  SELECT * FROM products WHERE LOWER(pro_desc) LIKE LOWER('%$text%') AND available = 1";
 } 
 else{
-  $stmt = "SELECT * FROM products";
+  $stmt = "SELECT * FROM products where available = 1";
 }
 $sql = $conn->prepare($stmt);
 $sql->execute();
@@ -316,26 +287,20 @@ $result = $sql->fetchAll(PDO :: FETCH_OBJ);
 
                     <div class="col-md-12 " style="text-align:center;">
                        <button name="Submit" class="btn btn-warning"> Update Product </button>
-                    </div> 
+                      <button name="Delete" class="btn btn-warning" style="background-color: red; border: none; margin-left: 15px;"> Remove Product </button>
+
+                    </div>
                   
                   <?php } ?>
             </div>
-</form>
-            
-
-
-
-          
-        </div>
-
-       
-
+</form>          
+        </div>    
       </div>
       <hr>
-       <?php
-
-
-              }
-
-            ?>
+       <?php  }  ?>
     </div>
+    <?php if($_SESSION['session_role'] == "Admin"){ ?>
+        <div class="col-md-12 " style="text-align:center;">
+            <button name="addItem" class="btn btn-warning" style="margin: 15px; background-color: #29AB87; border: none;"> Add new product </button>
+        </div>
+    <?php } ?>
