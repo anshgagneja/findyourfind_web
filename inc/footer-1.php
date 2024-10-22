@@ -1,5 +1,5 @@
-<div class="container" style="text-align: center; font-weight: 100; font-size: 12px ;bottom:20px ; position: fixed;">
-  <span>All Rights Reserved</span>
+<div class="container" style="text-align: right; font-weight: 100; font-size: 12px ;bottom:10px ; position: fixed; margin-top: 30px">
+  <t>All Rights Reserved</t>
 </div>
 
 

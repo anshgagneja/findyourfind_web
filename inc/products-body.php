@@ -68,8 +68,6 @@ if (isset($_POST['Cart'])) {
 
 }
 
-
-
 if (isset($_POST['Submit'])) {
 
   $pid = $_POST['pid'];
@@ -139,6 +137,10 @@ if(isset($_POST['Delete'])){
   $sql = $conn->prepare($query);
   $sql->execute();
   header("Location: index.php?page=Products");
+}
+
+if(isset($_POST['addItem'])){
+    header("Location: index.php?page=Add_Products");
 }
 
 //Select Statement.
@@ -300,7 +302,7 @@ $result = $sql->fetchAll(PDO :: FETCH_OBJ);
        <?php  }  ?>
     </div>
     <?php if($_SESSION['session_role'] == "Admin"){ ?>
-        <div class="col-md-12 " style="text-align:center;">
-            <button name="addItem" class="btn btn-warning" style="margin: 15px; background-color: #29AB87; border: none;"> Add new product </button>
-        </div>
+        <form method="POST" class="col-md-12 " style="text-align:center;">
+            <button name="addItem" type="submit" class="btn btn-warning" style="margin: 15px; background-color: #29AB87; border: none;"> Add new product </button>
+        </form>
     <?php } ?>
