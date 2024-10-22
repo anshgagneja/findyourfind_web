@@ -41,7 +41,7 @@ if (!function_exists('deleteWish')) {
 if (!function_exists('getuserCart')) {
   function getuserCart($conn){
      $uid = $_SESSION['session_id'];         
-     $user_cart = "select * from tbl_cart LEFT JOIN products on tbl_cart.product_id = `products`.`id` where user_id = '$uid'";
+     $user_cart = "select * from tbl_cart LEFT JOIN products on tbl_cart.product_id = `products`.`id` where user_id = '$uid' AND available = 1";
      $cart_list = $conn->prepare("$user_cart");
      $cart_list->execute();
      return $cart_list->fetchAll(PDO :: FETCH_OBJ);
@@ -52,7 +52,7 @@ if (!function_exists('getuserWish')) {
   function getuserWish($conn){
      $uid = $_SESSION['session_id'];         
      $user_cart = "select * from tbl_user_has_wishlist w inner join products p on p.id = w.product_id
-     where w.user_id = '$uid'";
+     where w.user_id = '$uid' AND available = 1";
      
      $cart_list = $conn->prepare("$user_cart");
      $cart_list->execute();
