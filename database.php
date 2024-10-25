@@ -44,6 +44,31 @@ if (!function_exists('getuserCart')) {
      $user_cart = "select * from tbl_cart LEFT JOIN products on tbl_cart.product_id = `products`.`id` where user_id = '$uid' AND available > 0";
      $cart_list = $conn->prepare("$user_cart");
      $cart_list->execute();
+     $cart_list = $cart_list->fetchAll(PDO :: FETCH_OBJ);
+
+     foreach($cart_list as $item){
+        $pid = $item->product_id;
+        $cart_qty = $item->qty;
+
+        $check_available = "SELECT available FROM products WHERE id = '$pid'";
+        $result_available = $conn->prepare($check_available);
+        $result_available->execute();
+        $result = $result_available->fetchAll(PDO::FETCH_OBJ);
+        $available_qty = $result[0]->available; 
+
+        if($available_qty == 0){
+            deleteCart($conn, $pid);
+        }
+        elseif($cart_qty > $available_qty){
+            $query = $conn->prepare("UPDATE tbl_cart SET qty = '$available_qty' WHERE user_id = '$uid' AND product_id = '$pid'");
+            $query->execute();
+        }
+     }
+
+     $uid = $_SESSION['session_id'];         
+     $user_cart = "select * from tbl_cart LEFT JOIN products on tbl_cart.product_id = `products`.`id` where user_id = '$uid' AND available > 0";
+     $cart_list = $conn->prepare("$user_cart");
+     $cart_list->execute();
      return $cart_list->fetchAll(PDO :: FETCH_OBJ);
   }
 }
