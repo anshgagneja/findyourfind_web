@@ -54,11 +54,11 @@ session_destroy();
             padding:30px;">
 
                 <img src="assets/img/logout2.png" height="250px"><br>
-                <span style="font-weight: 100;color: black">Logged Out Securely...<br><br>You will be Redirected to Home After 5 seconds</span>
+                <span style="font-weight: 100;color: black">Logged Out Securely...<br><br>You will be Redirected to Home After 3 seconds</span>
             </div>
             <div class="col-md-4"></div>
       </div>
     </div>
 
     <!-- Admin Panel HTML codes will be written here (End)-->
-    <meta http-equiv="refresh" content="5;url=index.php" />
+    <meta http-equiv="refresh" content="3;url=index.php" />

@@ -4,6 +4,7 @@
         $desc = addslashes($_POST['productdesc']);
         $reg_price = $_POST['regularprice'];
         $sale_price = $_POST['sellingprice'];
+        $category = $_POST['category_id'];
         $qty = $_POST['qty'];
 
         $uploadDir = 'assets/img/'; 
@@ -21,7 +22,9 @@
             echo "<p>File upload error: " . $fileError . "</p>";
         }
 
-        $query1 = "INSERT INTO products (pro_name, pro_rp, pro_sp, pro_desc, available) VALUES ('$name', '$reg_price', '$sale_price', '$desc', '$qty')";
+        $query1 = "INSERT INTO products (pro_name, pro_rp, pro_sp, pro_desc, available, category_id) 
+        VALUES ('$name', '$reg_price', '$sale_price', '$desc', '$qty', '$category')";
+
         if ($conn->exec($query1) === false) {
             echo "<p>Error inserting product.</p>";
         } else {
@@ -87,6 +90,21 @@
                     <div>
                         <label><strong>Description : </strong></label>
                         <textarea class="form-control" rows="5" name="productdesc" required></textarea>
+                    </div>
+                    <div class="quantity">
+                        <label><strong>Category</strong></label>
+                        <select id="categorySelect" name="category_id" class="form-control" required>
+                            <option value="1">Electronics</option>
+                            <option value="2">Furniture</option>
+                            <option value="3">Clothing</option>
+                            <option value="4">Books</option>
+                            <option value="5">Groceries</option>
+                            <option value="6">Beauty & Health</option>
+                            <option value="7">Sports & Outdoors</option>
+                            <option value="8">Home Appliances</option>
+                            <option value="9">Musical Instruments</option>
+                            <option value="10" selected>Others</option>
+                        </select>
                     </div>
                     <div class="quantity">
                         <label><strong>Quantity Available</strong></label>

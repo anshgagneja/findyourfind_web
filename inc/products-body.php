@@ -11,6 +11,7 @@ $pro_sp = $_POST['sellingprice'] ?? "";
 $pro_rp = $_POST['regularprice'] ?? "";
 $pro_desc = isset($_POST['productdesc']) ? addslashes($_POST['productdesc']) : "";
 $pro_qty = $_POST['pro_qty'] ?? 0;
+$cat_id = $_POST['category_id'] ?? 10;
 
 if (isset($_POST['Wishlist'])) {
     $pid = $_POST['pid'];
@@ -76,7 +77,7 @@ if (isset($_POST['Submit'])) {
         }
     }
     
-    $sql = "UPDATE products SET pro_name = '$pro_name', pro_sp = '$pro_sp', pro_desc = '$pro_desc', pro_rp = '$pro_rp', available = '$pro_qty'";
+    $sql = "UPDATE products SET pro_name = '$pro_name', pro_sp = '$pro_sp', pro_desc = '$pro_desc', pro_rp = '$pro_rp', available = '$pro_qty', category_id = '$cat_id'";
     
     if ($photo_1) {
         $sql .= ", pro_img_1 = '$photo_1'";
@@ -106,7 +107,9 @@ if (isset($_GET['text'])) {
     $text = addslashes($_GET['text']);
     $stmt = "SELECT * FROM products WHERE LOWER(pro_name) LIKE LOWER('%$text%') 
              UNION 
-             SELECT * FROM products WHERE LOWER(pro_desc) LIKE LOWER('%$text%')";
+             SELECT * FROM products WHERE LOWER(pro_desc) LIKE LOWER('%$text%')
+             UNION
+             SELECT * FROM products WHERE category_id in (SELECT category_id FROM product_category WHERE LOWER(category) LIKE LOWER('%$text%'))";
 } else {
     $stmt = "SELECT * FROM products";
 }
@@ -136,6 +139,12 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
             $p_rp = $data->pro_rp;
             $p_desc = $data->pro_desc;
             $pro_qty = $data->available;
+            $cat_id = $data->category_id;
+
+            $query = $conn->prepare("SELECT category FROM product_category WHERE category_id = '$cat_id'");
+            $query->execute();
+            $category_name = $query->fetch(PDO::FETCH_OBJ);
+            $category = $category_name->category;
             
             $result_img = getProductImages($conn, $p_id);
             $uid = $_SESSION['session_id'];
@@ -190,6 +199,25 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
                     <?php } ?>
                 </div>
                 <div class="col-md-6 mb-3">
+                    <label><strong>Category</strong></label>                    
+                    <?php if ($_SESSION['session_role'] != "Admin") { 
+                        echo "<p> $category </p>";
+                    } else { ?>
+                        <select id="categorySelect" name="category_id" class="form-control">
+                            <option value="1" <?php if ($cat_id == 1) echo 'selected'; ?>>Electronics</option>
+                            <option value="2" <?php if ($cat_id == 2) echo 'selected'; ?>>Furniture</option>
+                            <option value="3" <?php if ($cat_id == 3) echo 'selected'; ?>>Clothing</option>
+                            <option value="4" <?php if ($cat_id == 4) echo 'selected'; ?>>Books</option>
+                            <option value="5" <?php if ($cat_id == 5) echo 'selected'; ?>>Groceries</option>
+                            <option value="6" <?php if ($cat_id == 6) echo 'selected'; ?>>Beauty & Health</option>
+                            <option value="7" <?php if ($cat_id == 7) echo 'selected'; ?>>Sports & Outdoors</option>
+                            <option value="8" <?php if ($cat_id == 8) echo 'selected'; ?>>Home Appliances</option>
+                            <option value="9" <?php if ($cat_id == 9) echo 'selected'; ?>>Musical Instruments</option>
+                            <option value="10" <?php if ($cat_id == 10) echo 'selected'; ?>>Others</option>
+                        </select>
+                    <?php } ?>
+                </div>
+                <div class="col-md-6 mb-3">
                     <label><strong>Quantity Available</strong></label>                    
                     <?php if ($_SESSION['session_role'] != "Admin") { 
                         echo "<p> $pro_qty </p>";
@@ -209,7 +237,7 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
                         <p class="text-center text-danger"><b>Product Currently Unavailable</b></p>
                     <?php } 
                 } else { ?>
-                    <div class="col-md-7 mb-3">
+                    <div class="col-md-6 mb-3">
                         <input type="file" name="photo1" class="form-control">
                     </div>
                     <input type="hidden" name="pid" value="<?php echo $p_id; ?>" class="form-control">
