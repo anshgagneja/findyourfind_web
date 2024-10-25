@@ -53,3 +53,7 @@
 .submission {
   text-align: center;
 }
+
+.quantity {
+  flex: 0.5;
+}

@@ -1,9 +1,10 @@
 <?php
     if(isset($_POST['submit'])){
-        $name = $_POST['productname'];
-        $desc = $_POST['productdesc'];
+        $name = addslashes($_POST['productname']);
+        $desc = addslashes($_POST['productdesc']);
         $reg_price = $_POST['regularprice'];
         $sale_price = $_POST['sellingprice'];
+        $qty = $_POST['qty'];
 
         $uploadDir = 'assets/img/'; 
         $fileName = basename($_FILES['photo']['name']);
@@ -20,7 +21,7 @@
             echo "<p>File upload error: " . $fileError . "</p>";
         }
 
-        $query1 = "INSERT INTO products (pro_name, pro_rp, pro_sp, pro_desc) VALUES ('$name', '$reg_price', '$sale_price', '$desc')";
+        $query1 = "INSERT INTO products (pro_name, pro_rp, pro_sp, pro_desc, available) VALUES ('$name', '$reg_price', '$sale_price', '$desc', '$qty')";
         if ($conn->exec($query1) === false) {
             echo "<p>Error inserting product.</p>";
         } else {
@@ -86,6 +87,10 @@
                     <div>
                         <label><strong>Description : </strong></label>
                         <textarea class="form-control" rows="5" name="productdesc" required></textarea>
+                    </div>
+                    <div class="quantity">
+                        <label><strong>Quantity Available</strong></label>
+                        <input type="number" name="qty" class="form-control" required/>
                     </div>
                 </div>
             </div>            
