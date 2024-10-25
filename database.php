@@ -131,11 +131,22 @@ if (!function_exists('placeOrderUserId')) {
       $cart_list = getuserCart($conn);
       $totalAmount = 0;
       $title = "";
+
       foreach ($cart_list as $obj) {
         $totalAmount+= $obj->qty * $obj->pro_sp;
         $p_id = $obj->id;
         $title .= $obj->pro_name.' '.$obj->qty.' '.$obj->pro_sp.' '."( ".$obj->qty." * ".$obj->pro_sp." ) = ".($obj->qty * $obj->pro_sp).'<br>';
         $obj->pro_desc = "";
+
+        $query = $conn->prepare("SELECT available FROM products WHERE id = '$p_id'");
+        $query->execute();
+        $result = $query->fetchAll(PDO :: FETCH_OBJ);
+        $available_qty = $result[0]->available;
+
+        $left = $available_qty - $obj->qty;
+
+        $update_query = $conn->prepare("UPDATE products SET available = '$left' WHERE id = '$p_id'");
+        $update_query->execute();
       }  
 
       $status = "1";
@@ -144,15 +155,11 @@ if (!function_exists('placeOrderUserId')) {
 
       $sqlInsert = "INSERT INTO `tbl_orders`(`order_date`,`title`,`order_details`, `total_amount`, `user_id`, `order_status`) VALUES ('$date','$title','$order_details','$totalAmount','$user_id','$status')";
 
-
       $query = $conn->prepare($sqlInsert);
       $query->execute();
 
-
       $sqlremove = $conn->prepare("delete from tbl_cart where user_id = '$user_id' ");
-      $sqlremove->execute();
-
-       
+      $sqlremove->execute();       
 
   }
 }
