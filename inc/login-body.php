@@ -17,37 +17,45 @@ if (isset($_POST['submit'])) {
   $sql = $conn->prepare($select_user);
   $sql->execute();
   $data = $sql->fetchAll(PDO::FETCH_OBJ);
-  foreach($data as $row){
-   
-    if($role == "Customer"){
-      $user_id =$row->id;
-      $user_name =$row->user_name;
-      $user_email =$row->user_email;
-      $user_mobile =$row->mobile;
 
-      if($user_id!=''){
-        $_SESSION['session_role'] = $role;
-        $_SESSION['session_id'] = $user_id;
-        $_SESSION['session_name'] = $user_name;
-        $_SESSION['session_email'] = $user_email;
-        $_SESSION['session_mobile'] = $user_mobile;
+  if(count($data) == 0){
+    echo "<script>alert('Incorrect email/ password. Please try again');</script>";
+    echo "<script>window.location.href='index.php';</script>";
+    exit;
+  } 
+  else {
+    foreach($data as $row){
+    
+      if($role == "Customer"){
+        $user_id =$row->id;
+        $user_name =$row->user_name;
+        $user_email =$row->user_email;
+        $user_mobile =$row->mobile;
 
-        header("Location: index.php?page=Dashboard");
-      }
-    } else {
-      $user_id =$row->admin_id;
-      $user_name ="Admin";
-      $user_email =$row->admin_email;
-      $user_mobile ="";
+        if($user_id!=''){
+          $_SESSION['session_role'] = $role;
+          $_SESSION['session_id'] = $user_id;
+          $_SESSION['session_name'] = $user_name;
+          $_SESSION['session_email'] = $user_email;
+          $_SESSION['session_mobile'] = $user_mobile;
 
-      if($user_id!=''){
-        $_SESSION['session_role'] = $role;
-        $_SESSION['session_id'] = $user_id;
-        $_SESSION['session_name'] = $user_name;
-        $_SESSION['session_email'] = $user_email;
-        $_SESSION['session_mobile'] = $user_mobile;
+          header("Location: index.php?page=Dashboard");
+        }
+      } else {
+        $user_id =$row->admin_id;
+        $user_name ="Admin";
+        $user_email =$row->admin_email;
+        $user_mobile ="";
 
-        header("Location: index.php?page=Dashboard");
+        if($user_id!=''){
+          $_SESSION['session_role'] = $role;
+          $_SESSION['session_id'] = $user_id;
+          $_SESSION['session_name'] = $user_name;
+          $_SESSION['session_email'] = $user_email;
+          $_SESSION['session_mobile'] = $user_mobile;
+
+          header("Location: index.php?page=Dashboard");
+        }
       }
     }
   }

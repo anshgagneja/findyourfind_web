@@ -130,10 +130,12 @@ if (!function_exists('placeOrderUserId')) {
   function placeOrderUserId($conn,$user_id){
       $cart_list = getuserCart($conn);
       $totalAmount = 0;
+      $totalQty = 0;
       $title = "";
 
       foreach ($cart_list as $obj) {
         $totalAmount+= $obj->qty * $obj->pro_sp;
+        $totalQty += $obj->qty;
         $p_id = $obj->id;
         $title .= $obj->pro_name.' '.$obj->qty.' '.$obj->pro_sp.' '."( ".$obj->qty." * ".$obj->pro_sp." ) = ".($obj->qty * $obj->pro_sp).'<br>';
         $obj->pro_desc = "";
@@ -153,7 +155,7 @@ if (!function_exists('placeOrderUserId')) {
       $order_details = json_encode($cart_list);
       $date = date("Y-m-d");
 
-      $sqlInsert = "INSERT INTO `tbl_orders`(`order_date`,`title`,`order_details`, `total_amount`, `user_id`, `order_status`) VALUES ('$date','$title','$order_details','$totalAmount','$user_id','$status')";
+      $sqlInsert = "INSERT INTO `tbl_orders`(`order_date`,`title`,`order_details`, `total_amount`, `user_id`, `order_status`, order_quantity) VALUES ('$date','$title','$order_details','$totalAmount','$user_id','$status', '$totalQty')";
 
       $query = $conn->prepare($sqlInsert);
       $query->execute();

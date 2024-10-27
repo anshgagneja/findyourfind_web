@@ -4,19 +4,9 @@
 
   if($_SESSION['session_role'] != "Admin"){
     $order_list = getUserOrders($conn,$user_id);
-    //$order_details = getLoginUserDetails($conn,$user_id);
-
-    //oid
-    // if(isset($_GET['oid'])){
-    //   $oid = $_GET['oid'];
-    //   $sqlremove = $conn->prepare("update  tbl_order_status set order_status = '4' where order_id = '$oid' ");
-      
-    //   $sqlremove->execute();
-    // }
 
   }else{
     $order_list = getUserOrdersAdmin($conn,$user_id);
-    //$order_details = getLoginUserDetails($conn,$user_id);
   }
 
 
@@ -49,21 +39,18 @@
   </thead>
   <tbody>
     <?php
+      $counter = 1;
       foreach ($order_list as $orderObj) { ?>
       <tr>
-        <th scope="row">1</th>
+        <th scope="row"><?php echo $counter ?></th>
         <td><?php echo $orderObj->order_date; ?></td>
         <td><?php echo $orderObj->title; ?></td>
         <td><?php echo $orderObj->user_name;?></td>
         <td><?php echo $orderObj->user_mobile;?></td>
         <td><?php echo $orderObj->user_email;?></td>
-        <td><?php echo $orderObj->status_text; ?></td>
-
-      
-
+        <td><?php echo $orderObj->status_text; ?></td>    
       </tr>
-    <?php  } ?>   
-    
+    <?php $counter += 1; } ?>       
     
   </tbody>
 </table>
