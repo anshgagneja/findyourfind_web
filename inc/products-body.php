@@ -244,7 +244,35 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
                     <div class="col-md-12 text-center">
                         <button name="Submit" class="btn btn-warning"> Update Product </button>
                         <button name="Delete" class="btn btn-danger ml-3"> Remove Product </button>
+                        <button name="History" class="btn btn-warning"> View Order History </button>
                     </div>
+                    <?php if(isset($_POST['History'])){
+                            $pid = $_POST['pid'];
+                            $stmt = $conn->prepare("CALL GetProductOrderDetails('$pid')");
+                            $stmt->execute();
+                            $result = $stmt->fetch(PDO::FETCH_ASSOC); 
+                    ?>
+                    <div class="mt-4">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Total Orders</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    echo "<tr>";
+                                    echo "<td>" . htmlspecialchars($result['product_name']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($result['category']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($result['total_orders']) . "</td>";
+                                    echo "</tr>";
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php } ?>
                 <?php } ?>
             </div>
         </form>          
