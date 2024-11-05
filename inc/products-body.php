@@ -77,7 +77,9 @@ if (isset($_POST['Submit'])) {
         }
     }
     
-    $sql = "UPDATE products SET pro_name = '$pro_name', pro_sp = '$pro_sp', pro_desc = '$pro_desc', pro_rp = '$pro_rp', available = '$pro_qty', category_id = '$cat_id'";
+    $name = addslashes($pro_name);
+    $desc = addslashes($pro_desc);
+    $sql = "UPDATE products SET pro_name = '$name', pro_sp = '$pro_sp', pro_desc = '$desc', pro_rp = '$pro_rp', available = '$pro_qty', category_id = '$cat_id'";
     
     if ($photo_1) {
         $sql .= ", pro_img_1 = '$photo_1'";
@@ -184,17 +186,17 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
                 <div class="col-md-6 mb-3">
                     <label><strong>Regular Price</strong></label>                    
                     <?php if ($_SESSION['session_role'] != "Admin") { 
-                        echo "<p> $p_rp </p>";
+                        echo "<p>$ $p_rp </p>";
                     } else { ?>
-                        <input type="text" name="regularprice" class="form-control" value="<?php echo $p_rp; ?>">
+                        <input type="text" name="regularprice" class="form-control" value="$ <?php echo $p_rp; ?>">
                     <?php } ?>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label><strong>Sale Price</strong></label>                    
                     <?php if ($_SESSION['session_role'] != "Admin") { 
-                        echo "<p> $p_sp </p>";
+                        echo "<p>$ $p_sp </p>";
                     } else { ?>
-                        <input type="text" name="sellingprice" class="form-control" value="<?php echo $p_sp; ?>">
+                        <input type="text" name="sellingprice" class="form-control" value="$ <?php echo $p_sp; ?>">
                     <?php } ?>
                 </div>
                 <div class="col-md-12 mb-3">
