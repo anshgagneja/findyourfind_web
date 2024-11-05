@@ -77,11 +77,9 @@ if (isset($_POST['Submit'])) {
         }
     }
     
-    $sql = "UPDATE products SET pro_name = '$pro_name', pro_sp = '$pro_sp', pro_desc = '$pro_desc', pro_rp = '$pro_rp', available = '$pro_qty', category_id = '$cat_id'";
-    
-    if ($photo_1) {
-        $sql .= ", pro_img_1 = '$photo_1'";
-    }
+    $name = addslashes($pro_name);
+    $desc = addslashes($pro_desc);
+    $sql = "UPDATE products SET pro_name = '$name', pro_sp = '$pro_sp', pro_desc = '$desc', pro_rp = '$pro_rp', available = '$pro_qty', category_id = '$cat_id'";
     
     $sql .= " WHERE id = '$pid'";
     $conn->exec($sql);
@@ -167,7 +165,7 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
 <div class="row">
     <div class="col-md-3">
         <p>Product Id: <?php echo $p_id; ?></p>
-        <img src="assets/img/<?php echo $result_img[0]->img_path ?? 'placeholder.png'; ?>" width="250px" alt="Product Image">
+        <img src="assets/img/<?php echo $result_img[0]->img_path ?? 'placeholder.png'; ?>" width="250px" alt="Product Image" style="max-height: 375px;">
     </div>
     <div class="col-md-9">
         <form method="POST" enctype="multipart/form-data">  
@@ -186,15 +184,15 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
                     <?php if ($_SESSION['session_role'] != "Admin") { 
                         echo "<p> $p_rp </p>";
                     } else { ?>
-                        <input type="text" name="regularprice" class="form-control" value="<?php echo $p_rp; ?>">
+                        <input type="number" name="regularprice" class="form-control" value="<?php echo $p_rp; ?>">
                     <?php } ?>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label><strong>Sale Price</strong></label>                    
+                    <label><strong>Sale Price ($)</strong></label>                    
                     <?php if ($_SESSION['session_role'] != "Admin") { 
-                        echo "<p> $p_sp </p>";
+                        echo "<p>$p_sp </p>";
                     } else { ?>
-                        <input type="text" name="sellingprice" class="form-control" value="<?php echo $p_sp; ?>">
+                        <input type="number" name="sellingprice" class="form-control" value="<?php echo $p_sp; ?>">
                     <?php } ?>
                 </div>
                 <div class="col-md-12 mb-3">
