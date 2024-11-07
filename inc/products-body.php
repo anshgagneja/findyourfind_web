@@ -146,6 +146,11 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
             $pro_qty = $data->available;
             $cat_id = $data->category_id;
 
+            if(is_null($cat_id)){
+                $cat_id = 10;
+            }
+            echo "<script>console.log('$cat_id');</script>";
+
             $query = $conn->prepare("SELECT category FROM product_category WHERE category_id = '$cat_id'");
             $query->execute();
             $category_name = $query->fetch(PDO::FETCH_OBJ);
@@ -180,7 +185,7 @@ $result = $sql->fetchAll(PDO::FETCH_OBJ);
                     <?php } ?>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label><strong>Regular Price</strong></label>                    
+                    <label><strong>Regular Price ($)</strong></label>                    
                     <?php if ($_SESSION['session_role'] != "Admin") { 
                         echo "<p> $p_rp </p>";
                     } else { ?>
