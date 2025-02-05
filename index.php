@@ -1,70 +1,71 @@
 <?php
 session_start();
-include 'database.php';
-//if (isset($_GET['page'])) {
-    $page_name = isset($_GET['page']) ?  $_GET['page'] : "";
-    if ($page_name == 'Register') {
-        include 'inc/header.php';
-        include 'inc/register-body.php';
-        include 'inc/footer.php';
-    }if ($page_name == 'Thankyou') {
-        include 'inc/header.php';
-        include 'inc/thankyou-body.php';
-        include 'inc/footer.php';
-    } else if ($page_name == 'Forgot-Password') {
-        include 'inc/header.php';
-        include 'inc/forgot-password-body.php';
-        include 'inc/footer.php';
-    } else if ($page_name == 'Logout') {
-        include 'inc/header.php';
-        include 'inc/logout-body.php';
-        include 'inc/footer.php';
-    } else if ($page_name == 'Authenticate') {
-        include 'inc/header.php';
-        include 'inc/authenticate-body.php';
-        include 'inc/footer.php';
-    } else if ($page_name == 'Dashboard') {
-        include 'inc/header-1.php';
-        include 'inc/nav-bar.php';
-        include 'inc/dashboard-body.php';
-        include 'inc/footer-1.php';
-    } else if ($page_name == 'Products') {
-        include 'inc/header-1.php';
-        include 'inc/nav-bar.php';
-        include 'inc/products-body.php';
-        include 'inc/footer-1.php';
-    } else if ($page_name == 'Orders') {
-        include 'inc/header-1.php';
-        include 'inc/nav-bar.php';
-        include 'inc/orders-body.php';
-        include 'inc/footer-1.php';
-    } else if ($page_name == 'Cart') {
-        include 'inc/header-1.php';
-        include 'inc/nav-bar.php';
-        include 'inc/cart-body.php';
-        include 'inc/footer-1.php';
-    }else if ($page_name == 'Checkout') {
-        include 'inc/header-1.php';
-        include 'inc/nav-bar.php';
-        include 'inc/checkout-body.php';
-        include 'inc/footer-1.php';
-    } else if($page_name == 'Wishlist'){
-        include 'inc/header-1.php';
-        include 'inc/nav-bar.php';
-        include 'inc/wishlist-body.php';
-        include 'inc/footer-1.php';
-    } else if($page_name == "Add_Products"){
-        include 'inc/nav-bar.php';
-        include 'inc/add-product-body.php';
-        include 'inc/footer-1.php';
-    } else if($page_name == 'History'){
-        include 'inc/header-1.php';
-        include 'inc/nav-bar.php';
-        include 'inc/order_history.php';
-        include 'inc/footer-1.php';
-    } else {
-        include 'inc/header.php';
-        include 'inc/login-body.php';
-        include 'inc/footer.php';
-    }
+include __DIR__ . '/database.php';  // Ensure database.php is included correctly
+
+$page_name = isset($_GET['page']) ? $_GET['page'] : "";
+
+if ($page_name == 'Register') {
+    include __DIR__ . '/inc/header.php';
+    include __DIR__ . '/inc/register-body.php';
+    include __DIR__ . '/inc/footer.php';
+} elseif ($page_name == 'Thankyou') {
+    include __DIR__ . '/inc/header.php';
+    include __DIR__ . '/inc/thankyou-body.php';
+    include __DIR__ . '/inc/footer.php';
+} elseif ($page_name == 'Forgot-Password') {
+    include __DIR__ . '/inc/header.php';
+    include __DIR__ . '/inc/forgot-password-body.php';
+    include __DIR__ . '/inc/footer.php';
+} elseif ($page_name == 'Logout') {
+    include __DIR__ . '/inc/header.php';
+    include __DIR__ . '/inc/logout-body.php';
+    include __DIR__ . '/inc/footer.php';
+} elseif ($page_name == 'Authenticate') {
+    include __DIR__ . '/inc/header.php';
+    include __DIR__ . '/inc/authenticate-body.php';
+    include __DIR__ . '/inc/footer.php';
+} elseif ($page_name == 'Dashboard') {
+    include __DIR__ . '/inc/header-1.php';
+    include __DIR__ . '/inc/nav-bar.php';
+    include __DIR__ . '/inc/dashboard-body.php';
+    include __DIR__ . '/inc/footer-1.php';
+} elseif ($page_name == 'Products') {
+    include __DIR__ . '/inc/header-1.php';
+    include __DIR__ . '/inc/nav-bar.php';
+    include __DIR__ . '/inc/products-body.php';
+    include __DIR__ . '/inc/footer-1.php';
+} elseif ($page_name == 'Orders') {
+    include __DIR__ . '/inc/header-1.php';
+    include __DIR__ . '/inc/nav-bar.php';
+    include __DIR__ . '/inc/orders-body.php';
+    include __DIR__ . '/inc/footer-1.php';
+} elseif ($page_name == 'Cart') {
+    include __DIR__ . '/inc/header-1.php';
+    include __DIR__ . '/inc/nav-bar.php';
+    include __DIR__ . '/inc/cart-body.php';
+    include __DIR__ . '/inc/footer-1.php';
+} elseif ($page_name == 'Checkout') {
+    include __DIR__ . '/inc/header-1.php';
+    include __DIR__ . '/inc/nav-bar.php';
+    include __DIR__ . '/inc/checkout-body.php';
+    include __DIR__ . '/inc/footer-1.php';
+} elseif ($page_name == 'Wishlist') {
+    include __DIR__ . '/inc/header-1.php';
+    include __DIR__ . '/inc/nav-bar.php';
+    include __DIR__ . '/inc/wishlist-body.php';
+    include __DIR__ . '/inc/footer-1.php';
+} elseif ($page_name == 'Add_Products') {
+    include __DIR__ . '/inc/nav-bar.php';
+    include __DIR__ . '/inc/add-product-body.php';
+    include __DIR__ . '/inc/footer-1.php';
+} elseif ($page_name == 'History') {
+    include __DIR__ . '/inc/header-1.php';
+    include __DIR__ . '/inc/nav-bar.php';
+    include __DIR__ . '/inc/order_history.php';
+    include __DIR__ . '/inc/footer-1.php';
+} else {
+    include __DIR__ . '/inc/header.php';
+    include __DIR__ . '/inc/login-body.php';
+    include __DIR__ . '/inc/footer.php';
+}
 ?>
