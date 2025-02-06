@@ -1,71 +1,46 @@
 <?php
+// ✅ Start session at the top (Prevent "headers already sent" issue)
 if (session_status() == PHP_SESSION_NONE) {
-  session_start();
+    session_start();
 }
 
 include ('database.php');
 
 if (isset($_POST['submit'])) {
+    $useremail = $_POST['useremail'];
+    $userpassword = $_POST['password'];
+    $role = $_POST['role'];
+    $encrypted_password = md5($userpassword); // ✅ Consider using stronger hashing like bcrypt.
 
-  $useremail = $_POST['useremail'] ;
-  $userpassword = $_POST['password'];
-  $role = $_POST['role'];
-  $encrypted_password = md5($userpassword);
-
-  if($role == "Customer"){
-    $select_user = "SELECT * FROM users WHERE user_email='$useremail'AND user_password='$encrypted_password'";
-  } else {
-    $select_user = "SELECT * FROM tbl_admin WHERE admin_email='$useremail'AND admin_password='$encrypted_password'";
-  }
-  
-  $sql = $conn->prepare($select_user);
-  $sql->execute();
-  $data = $sql->fetchAll(PDO::FETCH_OBJ);
-
-  if(count($data) == 0){
-    echo "<script>alert('Incorrect email/ password. Please try again');</script>";
-    echo "<script>window.location.href='index.php';</script>";
-    exit;
-  } 
-  else {
-    foreach($data as $row){
-    
-      if($role == "Customer"){
-        $user_id =$row->id;
-        $user_name =$row->user_name;
-        $user_email =$row->user_email;
-        $user_mobile = $row->user_mobile; // Correct column name
-
-
-        if($user_id!=''){
-          $_SESSION['session_role'] = $role;
-          $_SESSION['session_id'] = $user_id;
-          $_SESSION['session_name'] = $user_name;
-          $_SESSION['session_email'] = $user_email;
-          $_SESSION['session_mobile'] = $user_mobile;
-
-          header("Location: index.php?page=Dashboard");
-        }
-      } else {
-        $user_id =$row->admin_id;
-        $user_name ="Admin";
-        $user_email =$row->admin_email;
-        $user_mobile ="";
-
-        if($user_id!=''){
-          $_SESSION['session_role'] = $role;
-          $_SESSION['session_id'] = $user_id;
-          $_SESSION['session_name'] = $user_name;
-          $_SESSION['session_email'] = $user_email;
-          $_SESSION['session_mobile'] = $user_mobile;
-
-          header("Location: index.php?page=Dashboard");
-        }
-      }
+    if ($role == "Customer") {
+        $select_user = "SELECT id, user_name, user_email, user_mobile FROM users WHERE user_email = ? AND user_password = ?";
+    } else {
+        $select_user = "SELECT admin_id AS id, 'Admin' AS user_name, admin_email, '' AS user_mobile FROM tbl_admin WHERE admin_email = ? AND admin_password = ?";
     }
-  }
+
+    $sql = $conn->prepare($select_user);
+    $sql->execute([$useremail, $encrypted_password]);
+    $data = $sql->fetch(PDO::FETCH_ASSOC);
+
+    if (!$data) {
+        echo "<script>alert('Incorrect email/ password. Please try again');</script>";
+        echo "<script>window.location.href='index.php';</script>";
+        exit;
+    }
+
+    // ✅ Store user session details
+    $_SESSION['session_role'] = $role;
+    $_SESSION['session_id'] = $data['id'];
+    $_SESSION['session_name'] = $data['user_name'];
+    $_SESSION['session_email'] = $data['user_email'];
+    $_SESSION['session_mobile'] = $data['user_mobile'] ?? ''; // Prevent "undefined property" warnings
+
+    // ✅ Redirect AFTER setting session
+    header("Location: index.php?page=Dashboard");
+    exit();
 }
 ?>
+
 
 <!-- Rest of your HTML code -->
 
