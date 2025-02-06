@@ -1,7 +1,5 @@
 <?php
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
+session_start();
 include 'database.php';
 //if (isset($_GET['page'])) {
     $page_name = isset($_GET['page']) ?  $_GET['page'] : "";
