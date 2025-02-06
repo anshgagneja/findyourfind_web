@@ -1,10 +1,10 @@
 <?php
 // Fetch database credentials from environment variables
-$servername = getenv("DB_HOST") ?: "localhost";
-$username = getenv("DB_USER") ?: "root";
-$password = getenv("DB_PASS") ?: "";
-$database = getenv("DB_NAME") ?: "findyourfind";
-$port = getenv("DB_PORT") ?: "3306"; // Default MySQL port if not set
+$servername = "monorail.proxy.rlwy.net";
+$username = "root";
+$password = "rVedUuzfcgfTgXQYQWwuxbXuJOcbaCBy"; // Your actual password
+$database = "railway";
+$port = 56168;
 
 try {
     // Connect to the database using PDO
