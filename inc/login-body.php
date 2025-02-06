@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
         $user_id =$row->id;
         $user_name =$row->user_name;
         $user_email =$row->user_email;
-        $user_mobile =$row->mobile;
+        $user_mobile =$row->user_mobile;
 
         if($user_id!=''){
           $_SESSION['session_role'] = $role;
@@ -60,12 +60,7 @@ if (isset($_POST['submit'])) {
     }
   }
 }
-?>
-
-<!-- Rest of your HTML code -->
-
-
-  <body>
+?><body>
     <!-- Admin Panel HTML codes will be written here(Starts)-->
 
     <div class="container-fluid">
