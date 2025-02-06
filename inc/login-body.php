@@ -1,5 +1,5 @@
 <?php
-// ✅ Ensure no session conflicts
+// ✅ Ensure session starts correctly
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -14,37 +14,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
     $role = $_POST['role'];
     $encrypted_password = md5($userpassword); // ⚠ Consider using bcrypt for better security
 
-    // ✅ Use proper SQL query with placeholders
+    // ✅ Use prepared statements to prevent SQL injection
     if ($role == "Customer") {
-        $select_user = "SELECT id, user_name, user_email, user_mobile FROM users WHERE user_email = ? AND user_password = ?";
+        $query = "SELECT id, user_name, user_email, user_mobile FROM users WHERE user_email = ? AND user_password = ?";
     } else {
-        $select_user = "SELECT admin_id AS id, 'Admin' AS user_name, admin_email, '' AS user_mobile FROM tbl_admin WHERE admin_email = ? AND admin_password = ?";
+        $query = "SELECT admin_id AS id, 'Admin' AS user_name, admin_email, '' AS user_mobile FROM tbl_admin WHERE admin_email = ? AND admin_password = ?";
     }
 
-    $sql = $conn->prepare($select_user);
-    $sql->execute([$useremail, $encrypted_password]);
-    $data = $sql->fetch(PDO::FETCH_ASSOC);
+    $stmt = $conn->prepare($query);
+    $stmt->execute([$useremail, $encrypted_password]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // ✅ Handle incorrect login
-    if (!$data) {
-        echo "<script>alert('Incorrect email/ password. Please try again');</script>";
+    if (!$user) {
+        echo "<script>alert('Incorrect email/password. Please try again');</script>";
         echo "<script>window.location.href='index.php';</script>";
-        exit;
+        exit();
     }
 
     // ✅ Store session details safely
     $_SESSION['session_role'] = $role;
-    $_SESSION['session_id'] = $data['id'];
-    $_SESSION['session_name'] = $data['user_name'];
-    $_SESSION['session_email'] = $data['user_email'] ?? '';  // Prevent Undefined error
-    $_SESSION['session_mobile'] = $data['user_mobile'] ?? '';
+    $_SESSION['session_id'] = $user['id'];
+    $_SESSION['session_name'] = $user['user_name'];
+    $_SESSION['session_email'] = $user['user_email'] ?? '';  // Prevent Undefined error
+    $_SESSION['session_mobile'] = $user['user_mobile'] ?? '';
 
     // ✅ Redirect AFTER setting session
     header("Location: index.php?page=Dashboard");
     exit();
 }
 ?>
-
 
 
 <!-- Rest of your HTML code -->
