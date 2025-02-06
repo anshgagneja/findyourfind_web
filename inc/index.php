@@ -66,5 +66,5 @@ include 'database.php';
         include 'inc/header.php';
         include 'inc/login-body.php';
         include 'inc/footer.php';
-    }
+    }
 ?>
