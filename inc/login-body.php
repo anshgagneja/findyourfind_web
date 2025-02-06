@@ -1,50 +1,66 @@
 <?php
-// ✅ Ensure session starts correctly
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 include ('database.php');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
+if (isset($_POST['submit'])) {
 
-    // ✅ Sanitize input
-    $useremail = trim($_POST['useremail']);
-    $userpassword = trim($_POST['password']);
-    $role = $_POST['role'];
-    $encrypted_password = md5($userpassword); // ⚠ Consider using bcrypt for better security
+  $useremail = $_POST['useremail'] ;
+  $userpassword = $_POST['password'];
+  $role = $_POST['role'];
+  $encrypted_password = md5($userpassword);
 
-    // ✅ Use prepared statements to prevent SQL injection
-    if ($role == "Customer") {
-        $query = "SELECT id, user_name, user_email, user_mobile FROM users WHERE user_email = ? AND user_password = ?";
-    } else {
-        $query = "SELECT admin_id AS id, 'Admin' AS user_name, admin_email, '' AS user_mobile FROM tbl_admin WHERE admin_email = ? AND admin_password = ?";
+  if($role == "Customer"){
+    $select_user = "SELECT * FROM users WHERE user_email='$useremail'AND user_password='$encrypted_password'";
+  } else {
+    $select_user = "SELECT * FROM tbl_admin WHERE admin_email='$useremail'AND admin_password='$encrypted_password'";
+  }
+  
+  $sql = $conn->prepare($select_user);
+  $sql->execute();
+  $data = $sql->fetchAll(PDO::FETCH_OBJ);
+
+  if(count($data) == 0){
+    echo "<script>alert('Incorrect email/ password. Please try again');</script>";
+    echo "<script>window.location.href='index.php';</script>";
+    exit;
+  } 
+  else {
+    foreach($data as $row){
+    
+      if($role == "Customer"){
+        $user_id =$row->id;
+        $user_name =$row->user_name;
+        $user_email =$row->user_email;
+        $user_mobile =$row->mobile;
+
+        if($user_id!=''){
+          $_SESSION['session_role'] = $role;
+          $_SESSION['session_id'] = $user_id;
+          $_SESSION['session_name'] = $user_name;
+          $_SESSION['session_email'] = $user_email;
+          $_SESSION['session_mobile'] = $user_mobile;
+
+          header("Location: index.php?page=Dashboard");
+        }
+      } else {
+        $user_id =$row->admin_id;
+        $user_name ="Admin";
+        $user_email =$row->admin_email;
+        $user_mobile ="";
+
+        if($user_id!=''){
+          $_SESSION['session_role'] = $role;
+          $_SESSION['session_id'] = $user_id;
+          $_SESSION['session_name'] = $user_name;
+          $_SESSION['session_email'] = $user_email;
+          $_SESSION['session_mobile'] = $user_mobile;
+
+          header("Location: index.php?page=Dashboard");
+        }
+      }
     }
-
-    $stmt = $conn->prepare($query);
-    $stmt->execute([$useremail, $encrypted_password]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    // ✅ Handle incorrect login
-    if (!$user) {
-        echo "<script>alert('Incorrect email/password. Please try again');</script>";
-        echo "<script>window.location.href='index.php';</script>";
-        exit();
-    }
-
-    // ✅ Store session details safely
-    $_SESSION['session_role'] = $role;
-    $_SESSION['session_id'] = $user['id'];
-    $_SESSION['session_name'] = $user['user_name'];
-    $_SESSION['session_email'] = $user['user_email'] ?? '';  // Prevent Undefined error
-    $_SESSION['session_mobile'] = $user['user_mobile'] ?? '';
-
-    // ✅ Redirect AFTER setting session
-    header("Location: index.php?page=Dashboard");
-    exit();
+  }
 }
 ?>
-
 
 <!-- Rest of your HTML code -->
 
