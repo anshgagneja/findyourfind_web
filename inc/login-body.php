@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include ('database.php');
 
 if (isset($_POST['submit'])) {
@@ -38,6 +39,9 @@ if (isset($_POST['submit'])) {
           $_SESSION['session_name'] = $user_name;
           $_SESSION['session_email'] = $user_email;
           $_SESSION['session_mobile'] = $user_mobile;
+          if (headers_sent($file, $line)) {
+            die("Headers already sent in $file on line $line");
+          }
 
           header("Location: index.php?page=Dashboard");
         }
@@ -60,6 +64,7 @@ if (isset($_POST['submit'])) {
     }
   }
 }
+ob_end_flush();
 ?><body>
     <!-- Admin Panel HTML codes will be written here(Starts)-->
 
