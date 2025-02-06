@@ -1,4 +1,6 @@
 <?php
+ob_start();  // Buffer output to prevent header errors
+session_start();
 include ('database.php');
 
 if (isset($_POST['submit'])) {
@@ -30,7 +32,8 @@ if (isset($_POST['submit'])) {
         $user_id =$row->id;
         $user_name =$row->user_name;
         $user_email =$row->user_email;
-        $user_mobile =$row->mobile;
+        $user_mobile = $row->user_mobile; // Correct column name
+
 
         if($user_id!=''){
           $_SESSION['session_role'] = $role;

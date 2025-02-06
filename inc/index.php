@@ -1,4 +1,5 @@
 <?php
+ob_start();  // Buffer output to prevent header errors
 session_start();
 include 'database.php';
 //if (isset($_GET['page'])) {

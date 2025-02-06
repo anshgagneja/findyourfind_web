@@ -15,13 +15,12 @@
 //   echo "Connection failed:" . $e->getMessage();
 // }
 
-// uncomment above if again running findyourfind.shop by buying webotapp and comment below chatgpt part
-
-// chatgpt localhost
-$servername = "localhost";
+// uncomment above if again running findyourfind.shop by buying webotapp 
+$servername = "monorail.proxy.rlwy.net";
 $username = "root";
-$password = "";
-$database = "findyourfind";
+$password = "rVedUuzfcgfTgXQYQWwuxbXuJOcbaCBy"; // Your actual password
+$database = "railway";
+$port = 56168;
 
 try {
   $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
