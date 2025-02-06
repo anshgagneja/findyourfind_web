@@ -1,17 +1,20 @@
 <?php
-// ✅ Start session at the top (Prevent "headers already sent" issue)
+// ✅ Ensure no session conflicts
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 include ('database.php');
 
-if (isset($_POST['submit'])) {
-    $useremail = $_POST['useremail'];
-    $userpassword = $_POST['password'];
-    $role = $_POST['role'];
-    $encrypted_password = md5($userpassword); // ✅ Consider using stronger hashing like bcrypt.
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
 
+    // ✅ Sanitize input
+    $useremail = trim($_POST['useremail']);
+    $userpassword = trim($_POST['password']);
+    $role = $_POST['role'];
+    $encrypted_password = md5($userpassword); // ⚠ Consider using bcrypt for better security
+
+    // ✅ Use proper SQL query with placeholders
     if ($role == "Customer") {
         $select_user = "SELECT id, user_name, user_email, user_mobile FROM users WHERE user_email = ? AND user_password = ?";
     } else {
@@ -22,24 +25,26 @@ if (isset($_POST['submit'])) {
     $sql->execute([$useremail, $encrypted_password]);
     $data = $sql->fetch(PDO::FETCH_ASSOC);
 
+    // ✅ Handle incorrect login
     if (!$data) {
         echo "<script>alert('Incorrect email/ password. Please try again');</script>";
         echo "<script>window.location.href='index.php';</script>";
         exit;
     }
 
-    // ✅ Store user session details
+    // ✅ Store session details safely
     $_SESSION['session_role'] = $role;
     $_SESSION['session_id'] = $data['id'];
     $_SESSION['session_name'] = $data['user_name'];
-    $_SESSION['session_email'] = $data['user_email'];
-    $_SESSION['session_mobile'] = $data['user_mobile'] ?? ''; // Prevent "undefined property" warnings
+    $_SESSION['session_email'] = $data['user_email'] ?? '';  // Prevent Undefined error
+    $_SESSION['session_mobile'] = $data['user_mobile'] ?? '';
 
     // ✅ Redirect AFTER setting session
     header("Location: index.php?page=Dashboard");
     exit();
 }
 ?>
+
 
 
 <!-- Rest of your HTML code -->
