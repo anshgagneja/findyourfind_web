@@ -1,5 +1,7 @@
 <?php
-session_start(); // Start session before any HTML output
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); // Start session only if it's not already active
+}
 ?>
 <!doctype html>
 <html lang="en">
