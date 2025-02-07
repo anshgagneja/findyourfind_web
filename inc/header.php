@@ -1,6 +1,7 @@
 <?php
+ob_start(); // Start output buffering
 if (session_status() === PHP_SESSION_NONE) {
-    session_start(); // Start session only if it's not already active
+    session_start();
 }
 ?>
 <!doctype html>
