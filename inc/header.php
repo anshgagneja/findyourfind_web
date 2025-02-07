@@ -1,3 +1,6 @@
+<?php
+session_start(); // Start session before any HTML output
+?>
 <!doctype html>
 <html lang="en">
 <head>
