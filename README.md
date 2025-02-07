@@ -78,3 +78,7 @@ A sample database file is provided to set up the project database. You can find 
 - Enhanced analytics for product trends.
 - Improved mobile responsiveness.
 - Additional features like customer reviews and ratings.
+
+## Live Demo
+[FindYourFind Web App](https://findyourfindweb-production.up.railway.app/)
+
